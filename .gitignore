@@ -3,3 +3,6 @@ envs/
 Habitat-FullstackEngineer.zip
 instructions.md
 __MACOSX/
+
+.env
+docker-compose-prod.yml
