@@ -28,8 +28,6 @@ COPY boot.sh .flaskenv ./
 COPY tests/ ./tests
 RUN chmod a+x boot.sh
 
-# Make the pipeline script executable and create a symlink
-RUN chmod +x ./boot.sh /opt/pipeline/gene_annotate && ln -s /opt/pipeline/gene_annotate /usr/local/bin/gene_annotate
 ENV FLASK_APP=clean_grid_flask_shell_ctx
 
 EXPOSE 5000

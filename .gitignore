@@ -5,4 +5,4 @@ instructions.md
 __MACOSX/
 
 .env
-docker-compose-prod.yml
+compose.dev.yaml
