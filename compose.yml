@@ -18,12 +18,18 @@ services:
       start_period: 20s
   admin:
     image: dpage/pgadmin4
-    restart: always
+    profiles:
+      - tools
     environment:
       PGADMIN_DEFAULT_EMAIL: ${PGADMIN_DEFAULT_EMAIL:-pgadmin@example.com}
       PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:-pgadmin_default_password}
     ports:
-      - 8080:80
+      - "127.0.0.1:${PGADMIN_PORT:-8080}:80"
+    volumes:
+      - admin-data:/var/lib/pgadmin
+    depends_on:
+      - db:
+        condition: service_healthy
   app:
     build:
       context: .
@@ -39,8 +45,16 @@ services:
       db:
         condition: service_healthy
   ui:
-    image: containers/cg-ui-dockerfile 
-  
+    build:
+      context: .
+      dockerfile: containers/cg-ui-dockerfile
+    environment:
+      VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:5000}
+    ports:
+      - "127.0.0.1:${UI_PORT:-5173}:5173"
+    depends_on:
+      app:
+        condition: service_started
 volumes:
   db-data:
   admin_data:
