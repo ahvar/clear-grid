@@ -1,0 +1,8 @@
+envs/
+.vscode/
+Habitat-FullstackEngineer.zip
+instructions.md
+__MACOSX/
+
+.env
+compose.dev.yaml

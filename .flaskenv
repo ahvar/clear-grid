@@ -1,0 +1,1 @@
+FLASK_APP=clear_grid_flask_shell_ctx.py
