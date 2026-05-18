@@ -36,6 +36,22 @@ The app can also be run with the explicit development compose file:
 docker compose -f compose.dev.yaml up --build
 ```
 
+## Docker Requirement
+
+This submission assumes Docker with Docker Compose is available. If Docker is not
+installed, install Docker Desktop from the official Docker documentation:
+
+```text
+https://docs.docker.com/get-started/get-docker/
+```
+
+After installation, confirm Docker is available:
+
+```bash
+docker --version
+docker compose version
+```
+
 ## Configuration
 
 The app can run with the defaults in `compose.yml`. To customize local settings:
@@ -109,6 +125,7 @@ review path.
 - `postgres:17` is pinned to avoid accidental major-version changes from the floating `postgres` image tag.
 - The SPA provides a lightweight visualization rather than a full dashboard.
 - The root contains operational files such as `compose.yml`, `boot.sh`, `alembic.ini`, and migration files because they are needed for the Docker demo and database startup.
+- "Local database" is interpreted as a database that can be run locally by the reviewer. The Docker setup uses a local PostgreSQL container rather than an in-memory database so migrations, persistence, and inspection behave like a real service.
 
 ## Planned Improvements
 
