@@ -16,9 +16,12 @@ class Config:
     PGADMIN_DEFAULT_EMAIL = (
         os.environ.get("PGADMIN_DEFAULT_EMAIL") or "pgadmin@example.com"
     )
-    DATABASE_URL = os.environ.get("DATABASE_URL") or "sqlite:///" + str(
-        base_dir / "app" / "app.db"
+    ALCHEMICAL_DATABASE_URL = (
+        os.environ.get("ALCHEMICAL_DATABASE_URL")
+        or os.environ.get("DATABASE_URL")
+        or "sqlite:///" + str(base_dir / "app" / "app.db")
     )
+    DATABASE_URL = ALCHEMICAL_DATABASE_URL
     DRY_RUN_DATA_PATH = os.getenv("DRY_RUN_DATA_PATH")
     ITEMS_PER_PAGE = 20
     LANGUAGES = ["en"]
