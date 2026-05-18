@@ -1,34 +1,17 @@
 FROM python:3.11-slim
 
-RUN apt-get update && apt-get install -y \
-    build-essential \
-    gcc \
-    curl \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-    
-# Set environment variables
-ENV PYTHONPATH=/opt/clear-grid:/opt/clear-grid/app:/opt/clear-grid/app/api:/opt/clear-grid/app/errors:/opt/clear-grid/tests
+ENV PYTHONPATH=/opt/clear-grid:/opt/clear-grid/app:/opt/clear-grid/app/api:/opt/clear-grid/app/errors
 ENV PATH=/opt/clear-grid/:$PATH
+ENV FLASK_APP=clear_grid_flask_shell_ctx:app
 
-# Set working directory in container
 WORKDIR /opt/clear-grid
 
-# Copy the requirements file into the container
 COPY ./requirements.txt /opt/clear-grid
 
-# Upgrade pip and install required packages
 RUN pip install --upgrade pip && pip install -r requirements.txt
-RUN pip install gunicorn psycopg2-binary cryptography
 
-# Copy the entire project into the container
 COPY ./ ./
-COPY migrations/ ./migrations
-COPY boot.sh .flaskenv ./
-COPY tests/ ./tests
 RUN chmod a+x boot.sh
-
-ENV FLASK_APP=clean_grid_flask_shell_ctx
 
 EXPOSE 5000
 ENTRYPOINT ["./boot.sh"]
