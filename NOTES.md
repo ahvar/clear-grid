@@ -5,6 +5,7 @@
 The supported demo path is Docker Compose. From the repository root:
 
 ```bash
+docker compose down -v
 docker compose up --build
 ```
 
@@ -20,8 +21,11 @@ Open the SPA at:
 http://localhost:5173/
 ```
 
+The `down -v` step clears any stale local database volume from previous runs,
+which avoids Postgres password mismatches when environment variables have changed.
+
 On startup the app container runs database migrations with `flask db upgrade`.
-When `INGEST_ON_STARTUP=true`, it then runs:
+By default, `INGEST_ON_STARTUP=true`, so it then runs:
 
 ```bash
 flask ingest-unit-results --date "$INGEST_DELIVERY_DATE"
@@ -29,12 +33,6 @@ flask ingest-unit-results --date "$INGEST_DELIVERY_DATE"
 
 The default compose settings ingest Habitat Energy unit auction results for
 `2026-05-17`.
-
-The app can also be run with the explicit development compose file:
-
-```bash
-docker compose -f compose.dev.yaml up --build
-```
 
 ## Docker Requirement
 
@@ -62,7 +60,7 @@ cp .env.example .env
 
 Useful variables:
 
-- `INGEST_ON_STARTUP`: set to `true` to ingest during container startup.
+- `INGEST_ON_STARTUP`: defaults to `true`; set to `false` to skip startup ingestion.
 - `INGEST_DELIVERY_DATE`: delivery date to ingest, in `YYYY-MM-DD` format.
 - `INGEST_PARTICIPANT`: registered auction participant filter.
 - `INGEST_RESOURCE_ID`: optional NESO resource id override. If empty, the app uses `NESO_RESOURCE_ID`.
@@ -93,6 +91,20 @@ Then open:
 
 ```text
 http://localhost:8080/
+```
+
+## Troubleshooting
+
+If the app logs show `password authentication failed for user "clear_grid"`,
+the Postgres volume was probably initialized with a different password from a
+previous run. `POSTGRES_PASSWORD` is only used when Postgres first creates the
+database volume; changing `.env` later does not update the stored database user.
+
+For a fresh demo database, reset the compose volume:
+
+```bash
+docker compose down -v
+docker compose up --build
 ```
 
 ## Framework And Library Choices
