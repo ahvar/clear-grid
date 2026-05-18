@@ -189,14 +189,9 @@ class TestAuctionUnitResultQueries:
         assert payload["total"] == 1
         assert [row["auction_unit"] for row in payload["data"]] == ["HAB-UNIT-002"]
 
-    def test_index_uses_daily_auction_result_grid_fields(self):
-        response = self.app.test_client().get("/")
+    def test_root_is_no_longer_served_by_flask(self):
+        response = self.app.test_client().get(
+            "/", headers={"Accept": "application/json"}
+        )
 
-        assert response.status_code == 200
-        html = response.get_data(as_text=True)
-        assert "const baseUrl = '/api/daily-auction-results';" in html
-        assert "delivery_start_utc" in html
-        assert "auction_unit" in html
-        assert "clearing_price_gbp_per_mw_h" in html
-        assert "customer" not in html
-        assert "order_items" not in html
+        assert response.status_code == 404

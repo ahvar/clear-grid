@@ -1,7 +1,4 @@
-import os
 from flask import Flask, request, current_app
-from sqlalchemy import String, ForeignKey, Table, Column
-from sqlalchemy.orm import Mapped, mapped_column, relationship
 from flask_migrate import Migrate
 from alchemical.flask import Alchemical
 from config import Config
@@ -27,13 +24,13 @@ def create_app(config_class=Config):
 
     app.register_blueprint(errors_bp)
 
-    from app.main import bp as main_bp
-
-    app.register_blueprint(main_bp)
-
     from app.api import bp as api_bp
 
     app.register_blueprint(api_bp, url_prefix="/api")
+
+    from app.cli import register_cli
+
+    register_cli(app)
     return app
 
 

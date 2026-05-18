@@ -23,13 +23,15 @@ class Config:
     )
     DATABASE_URL = ALCHEMICAL_DATABASE_URL
     NESO_API_BASE_URL = (
-        os.environ.get("NESO_API_BASE_URL")
-        or "https://api.neso.energy/api/3/action"
+        os.environ.get("NESO_API_BASE_URL") or "https://api.neso.energy/api/3/action"
     )
     NESO_RESOURCE_ID = (
-        os.environ.get("NESO_RESOURCE_ID")
-        or "a63ab354-7e68-44c2-ad96-c6f920c30e85"
+        os.environ.get("NESO_RESOURCE_ID") or "a63ab354-7e68-44c2-ad96-c6f920c30e85"
     )
+    INGEST_ON_STARTUP = os.environ.get("INGEST_ON_STARTUP") or "false"
+    INGEST_DELIVERY_DATE = os.environ.get("INGEST_DELIVERY_DATE")
+    INGEST_PARTICIPANT = os.environ.get("INGEST_PARTICIPANT")
+    INGEST_RESOURCE_ID = os.environ.get("INGEST_RESOURCE_ID")
     DRY_RUN_DATA_PATH = os.getenv("DRY_RUN_DATA_PATH")
     ITEMS_PER_PAGE = 20
     LANGUAGES = ["en"]

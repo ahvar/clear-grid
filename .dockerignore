@@ -1,12 +1,17 @@
-envs/
+.git/
+.pytest_cache/
 .vscode/
+__pycache__/
+*.pyc
+
+.env
+envs/
+tests/
+requirements-dev.txt
+
 Habitat-FullstackEngineer.zip
 instructions.md
 __MACOSX/
 
-__pycache__
 ui/node_modules/
 ui/dist/
-
-.env
-compose.dev.yaml
