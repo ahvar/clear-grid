@@ -5,6 +5,19 @@ from pathlib import Path
 
 from app import create_app, db
 from app.models import AuctionUnitResult, IngestionRun
+from app.neso.fields import (
+    AUCTION_PRODUCT,
+    AUCTION_UNIT,
+    CLEARING_PRICE,
+    DELIVERY_END,
+    DELIVERY_START,
+    EXECUTED_QUANTITY,
+    POST_CODE,
+    REGISTERED_AUCTION_PARTICIPANT,
+    SERVICE_TYPE,
+    TECHNOLOGY_TYPE,
+    UNIT_RESULT_ID,
+)
 from tests.test_config import TestConfig
 
 NESO_CSV_PATH = Path(__file__).resolve().parents[1] / "neso.csv"
@@ -21,17 +34,17 @@ def _parse_utc_datetime(value):
 
 def _auction_unit_result_from_csv_row(row, source_resource_id="test-resource"):
     return AuctionUnitResult(
-        unit_result_id=row["unitResultID"],
-        registered_auction_participant=row["registeredAuctionParticipant"],
-        auction_unit=row["auctionUnit"],
-        service_type=row["serviceType"],
-        auction_product=row["auctionProduct"],
-        executed_quantity_mw=Decimal(row["executedQuantity"]),
-        clearing_price_gbp_per_mw_h=Decimal(row["clearingPrice"]),
-        delivery_start_utc=_parse_utc_datetime(row["deliveryStart"]),
-        delivery_end_utc=_parse_utc_datetime(row["deliveryEnd"]),
-        technology_type=row["technologyType"],
-        post_code=row["postCode"],
+        unit_result_id=row[UNIT_RESULT_ID],
+        registered_auction_participant=row[REGISTERED_AUCTION_PARTICIPANT],
+        auction_unit=row[AUCTION_UNIT],
+        service_type=row[SERVICE_TYPE],
+        auction_product=row[AUCTION_PRODUCT],
+        executed_quantity_mw=Decimal(row[EXECUTED_QUANTITY]),
+        clearing_price_gbp_per_mw_h=Decimal(row[CLEARING_PRICE]),
+        delivery_start_utc=_parse_utc_datetime(row[DELIVERY_START]),
+        delivery_end_utc=_parse_utc_datetime(row[DELIVERY_END]),
+        technology_type=row[TECHNOLOGY_TYPE],
+        post_code=row[POST_CODE],
         source_resource_id=source_resource_id,
         raw_record=row,
     )
@@ -146,7 +159,7 @@ class TestIngestionRun:
         filtered_results = [
             _auction_unit_result_from_csv_row(row)
             for row in rows
-            if row["registeredAuctionParticipant"] == "HABITAT ENERGY LIMITED"
+            if row[REGISTERED_AUCTION_PARTICIPANT] == "HABITAT ENERGY LIMITED"
         ]
 
         assert len(filtered_results) == 2

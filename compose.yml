@@ -38,6 +38,7 @@ services:
       FLASK_APP: clear_grid_flask_shell_ctx:app
       SECRET_KEY: ${SECRET_KEY:-you-will-never-guess}
       DATABASE_URL: "postgresql+psycopg2://${POSTGRES_USER:-clear_grid}:${POSTGRES_PASSWORD:-clear_grid_password}@db:5432/${POSTGRES_DB:-clear_grid}"
+      NESO_API_BASE_URL: "${NESO_API_BASE_URL:-https://api.neso.energy/api/3/action}"
       NESO_RESOURCE_ID: "${NESO_RESOURCE_ID:-a63ab354-7e68-44c2-ad96-c6f920c30e85}"
     ports:
       - "127.0.0.1:${APP_PORT:-5000}:5000"
