@@ -5,6 +5,8 @@ instructions.md
 __MACOSX/
 
 __pycache__
+ui/node_modules/
+ui/dist/
 
 .env
 compose.dev.yaml
