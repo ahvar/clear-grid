@@ -1,6 +1,7 @@
 from flask import Flask, request, current_app
 from flask_migrate import Migrate
 from alchemical.flask import Alchemical
+from werkzeug.exceptions import HTTPException
 from config import Config
 
 # TODO: logger here
@@ -20,13 +21,14 @@ def create_app(config_class=Config):
     db.init_app(app)
     migrate.init_app(app, db)
 
-    from app.errors import bp as errors_bp
-
-    app.register_blueprint(errors_bp)
-
     from app.api import bp as api_bp
+    from app.api.errors import error_response
 
     app.register_blueprint(api_bp, url_prefix="/api")
+
+    @app.errorhandler(HTTPException)
+    def handle_http_exception(error):
+        return error_response(error.code)
 
     from app.cli import register_cli
 
