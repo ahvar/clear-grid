@@ -95,6 +95,20 @@ Then open:
 http://localhost:8080/
 ```
 
+## Troubleshooting
+
+If the app logs show `password authentication failed for user "clear_grid"`,
+the Postgres volume was probably initialized with a different password from a
+previous run. `POSTGRES_PASSWORD` is only used when Postgres first creates the
+database volume; changing `.env` later does not update the stored database user.
+
+For a fresh demo database, reset the compose volume:
+
+```bash
+docker compose down -v
+docker compose up --build
+```
+
 ## Framework And Library Choices
 
 - Flask provides a small API and CLI surface.
