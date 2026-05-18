@@ -16,8 +16,19 @@ class Config:
     PGADMIN_DEFAULT_EMAIL = (
         os.environ.get("PGADMIN_DEFAULT_EMAIL") or "pgadmin@example.com"
     )
-    DATABASE_URL = os.environ.get("DATABASE_URL") or "sqlite:///" + str(
-        base_dir / "app" / "app.db"
+    ALCHEMICAL_DATABASE_URL = (
+        os.environ.get("ALCHEMICAL_DATABASE_URL")
+        or os.environ.get("DATABASE_URL")
+        or "sqlite:///" + str(base_dir / "app" / "app.db")
+    )
+    DATABASE_URL = ALCHEMICAL_DATABASE_URL
+    NESO_API_BASE_URL = (
+        os.environ.get("NESO_API_BASE_URL")
+        or "https://api.neso.energy/api/3/action"
+    )
+    NESO_RESOURCE_ID = (
+        os.environ.get("NESO_RESOURCE_ID")
+        or "a63ab354-7e68-44c2-ad96-c6f920c30e85"
     )
     DRY_RUN_DATA_PATH = os.getenv("DRY_RUN_DATA_PATH")
     ITEMS_PER_PAGE = 20

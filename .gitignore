@@ -4,5 +4,7 @@ Habitat-FullstackEngineer.zip
 instructions.md
 __MACOSX/
 
+__pycache__
+
 .env
 compose.dev.yaml

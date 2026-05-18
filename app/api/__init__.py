@@ -1,4 +1,4 @@
 from flask import Blueprint
 
 bp = Blueprint("api", __name__)
-from app.api import api_selectors, errors
+from app.api import auction_results, errors
