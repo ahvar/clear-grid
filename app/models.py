@@ -9,6 +9,7 @@ from sqlalchemy import (
     ForeignKey,
     Index,
     Integer,
+    JSON,
     Numeric,
     String,
     Text,
@@ -120,7 +121,9 @@ class AuctionUnitResult(db.Model):
     ingested_at: Mapped[datetime] = mapped_column(
         DateTime(timezone=True), server_default=func.now(), nullable=False
     )
-    raw_record: Mapped[dict[str, Any]] = mapped_column(JSONB, nullable=False)
+    raw_record: Mapped[dict[str, Any]] = mapped_column(
+        JSONB().with_variant(JSON(), "sqlite"), nullable=False
+    )
     ingestion_run: Mapped[IngestionRun | None] = relationship(
         back_populates="unit_results"
     )
