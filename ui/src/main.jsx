@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import './styles.css';
 
 const PAGE_SIZE = 10;
 const columns = [
@@ -54,13 +55,28 @@ function App() {
   }
 
   const lastPage = Math.max(0, Math.ceil(total / PAGE_SIZE) - 1);
+  const sortLabel = columns.find(([key]) => key === sort.key)?.[1] || sort.key;
 
   return (
     <main>
-      <h1>Auction Unit Results</h1>
+      <header>
+        <p className="eyebrow">Clear Grid // NESO response reserve</p>
+        <h1>Unit Auction Console</h1>
+        <div className="status-bar" aria-label="Result status">
+          <span>ONLINE</span>
+          <span>{total} records</span>
+          <span>
+            Page {page + 1}/{lastPage + 1}
+          </span>
+          <span>
+            Sort {sort.direction}
+            {sortLabel}
+          </span>
+        </div>
+      </header>
       <input
         aria-label="Search results"
-        placeholder="Search"
+        placeholder="Search unit, product, technology, postcode"
         value={search}
         onChange={(event) => {
           setPage(0);
