@@ -1,1 +1,0 @@
-"""Custom app log utility"""

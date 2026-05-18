@@ -37,9 +37,14 @@ services:
     environment:
       FLASK_APP: clear_grid_flask_shell_ctx:app
       SECRET_KEY: ${SECRET_KEY:-you-will-never-guess}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-clear_grid_password}
       DATABASE_URL: "postgresql+psycopg2://${POSTGRES_USER:-clear_grid}:${POSTGRES_PASSWORD:-clear_grid_password}@db:5432/${POSTGRES_DB:-clear_grid}"
       NESO_API_BASE_URL: "${NESO_API_BASE_URL:-https://api.neso.energy/api/3/action}"
       NESO_RESOURCE_ID: "${NESO_RESOURCE_ID:-a63ab354-7e68-44c2-ad96-c6f920c30e85}"
+      INGEST_ON_STARTUP: "${INGEST_ON_STARTUP:-true}"
+      INGEST_DELIVERY_DATE: "${INGEST_DELIVERY_DATE:-2026-05-17}"
+      INGEST_PARTICIPANT: "${INGEST_PARTICIPANT:-HABITAT ENERGY LIMITED}"
+      INGEST_RESOURCE_ID: "${INGEST_RESOURCE_ID:-${NESO_RESOURCE_ID:-a63ab354-7e68-44c2-ad96-c6f920c30e85}}"
     ports:
       - "127.0.0.1:${APP_PORT:-5000}:5000"
     depends_on:
@@ -58,4 +63,4 @@ services:
         condition: service_started
 volumes:
   db-data:
-  admin_data:
+  admin-data:
