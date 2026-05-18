@@ -1,8 +1,3 @@
-{% extends "base.html" %}
-{% block styles %}
-<link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
-{% endblock %}
-{% block content %}
 <html>
   <head>
     <title>Auction Unit Results</title>
@@ -11,7 +6,8 @@
       body {
         font-family: Sans-Serif;
       }
-      td:nth-child(4) {
+      td:nth-child(4),
+      td:nth-child(5) {
         text-align: right;
       }
     </style>
@@ -24,7 +20,7 @@
     </div>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gridjs/6.0.6/gridjs.production.min.js"></script>
     <script>
-      const baseUrl = '/api/orders';
+      const baseUrl = '/api/daily-auction-results';
       const updateUrl = (prev, newQuery) => {
         query = new URLSearchParams(prev.split('?')[1]);
         for (const [key, value] of Object.entries(newQuery)) {
@@ -35,22 +31,19 @@
 
       const grid = new gridjs.Grid({
         columns: [
-          { id: 'timestamp', name: 'Date & Time', formatter: cell => {
+          { id: 'delivery_start_utc', name: 'Delivery Start', formatter: cell => {
             return new Date(Date.parse(cell)).toLocaleString();
           }},
-          { id: 'customer', name: 'Customer', formatter: (cell, row) => {
-            return gridjs.html(`<span title="${cell.address}\n${cell.phone}">${cell.name}</span>`);
+          { id: 'auction_unit', name: 'Unit' },
+          { id: 'auction_product', name: 'Product' },
+          { id: 'executed_quantity_mw', name: 'MW', formatter: cell => {
+            return Number(cell).toFixed(3);
           }},
-          { id: 'order_items', name: 'Order', sort: false, formatter: cell => {
-            return gridjs.html(cell.map(
-              item => `${item.quantity} x <span title="${item.product.manufacturer.name}\n${
-                item.product.countries.map(c => c.name).join(', ')}">${
-                  item.product.name}</span> @ $${item.unit_price.toFixed(2)}`
-            ).join('<br>'));
+          { id: 'clearing_price_gbp_per_mw_h', name: 'Price', formatter: cell => {
+            return '£' + Number(cell).toFixed(2);
           }},
-          { id: 'total', name: 'Total', formatter: cell => {
-            return '$' + cell.toFixed(2);
-          }},
+          { id: 'technology_type', name: 'Technology', sort: false },
+          { id: 'post_code', name: 'Postcode', sort: false },
           { id: 'id', name: 'ID', hidden: true },
         ],
         server: {
@@ -71,7 +64,13 @@
           multiColumn: true,
           server: {
             url: (prev, columns) => {
-              const columnIds = ['timestamp', 'customer', 'order_items', 'total'];
+              const columnIds = [
+                'delivery_start_utc',
+                'auction_unit',
+                'auction_product',
+                'executed_quantity_mw',
+                'clearing_price_gbp_per_mw_h',
+              ];
               const sort = columns.map(col => (col.direction === 1 ? '+' : '-') + columnIds[col.index]);
               return updateUrl(prev, {sort});
             },
