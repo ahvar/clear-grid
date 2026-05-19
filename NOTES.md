@@ -21,6 +21,10 @@ Open the SPA at:
 http://localhost:5173/
 ```
 
+Screenshot of the running UI:
+
+![Clear Grid UI](.notes_screenshots/clear_grid.png)
+
 The `down -v` step clears any stale local database volume from previous runs,
 which avoids Postgres password mismatches when environment variables have changed.
 
